@@ -1,0 +1,19 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "Claude Usage contributors"
+            }
+        ],
+        "Category": "System Information",
+        "Description": "Show remaining Claude usage in a KDE Plasma panel",
+        "Icon": "claude-usage",
+        "Id": "com.schlonz1975.claudeusage",
+        "License": "MIT",
+        "Name": "Claude Usage",
+        "Version": "0.1.0",
+        "Website": "https://github.com/schlonz1975/codex-usage-linux"
+    },
+    "X-Plasma-API-Minimum-Version": "6.0",
+    "KPackageStructure": "Plasma/Applet"
+}

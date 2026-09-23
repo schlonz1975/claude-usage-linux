@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Claude Usage Tray (Fallback)
+Comment=Show remaining Claude usage as a portable tray indicator
+Exec=__EXECUTABLE__
+Icon=claude-usage
+Terminal=false
+Categories=Utility;
+StartupNotify=false

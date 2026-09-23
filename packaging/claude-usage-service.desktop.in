@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Claude Usage Service
+Comment=Provide Claude usage data to the Plasma widget
+Exec=__EXECUTABLE__ --service
+Icon=claude-usage
+Terminal=false
+NoDisplay=true
+StartupNotify=false
+X-KDE-autostart-after=panel

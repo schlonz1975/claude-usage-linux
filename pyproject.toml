@@ -19,5 +19,5 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/schlonz1975/codex-usage-linux"
-Issues = "https://github.com/schlonz1975/codex-usage-linux/issues"
+Homepage = "https://github.com/schlonz1975/claude-usage-linux"
+Issues = "https://github.com/schlonz1975/claude-usage-linux/issues"

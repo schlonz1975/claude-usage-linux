@@ -2,7 +2,8 @@
 
 A native KDE Plasma panel widget and portable tray indicator for monitoring
 remaining Claude usage limits on Linux. Sibling project to [Codex Usage for
-Linux](../CodexUsageLinux), same design, Claude's own color theme.
+Linux](https://github.com/schlonz1975/codex-usage-linux), same design,
+Claude's own color theme.
 
 > [!IMPORTANT]
 > This is an unofficial community project. It is not affiliated with,
@@ -128,7 +129,7 @@ from other distributions and desktop environments are welcome.
 ## Credits
 
 This project's structure is adapted from this author's own [Codex Usage for
-Linux](../CodexUsageLinux) project. See
+Linux](https://github.com/schlonz1975/codex-usage-linux) project. See
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for details.
 
 ## License

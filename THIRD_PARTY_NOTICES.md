@@ -17,6 +17,7 @@ assets are not relicensed by this project's MIT License.
 
 This project's structure (Python usage client, D-Bus service, Plasma widget,
 GTK tray fallback, installer scripts) is adapted from this author's own
-MIT-licensed [Codex Usage for Linux](../CodexUsageLinux) project, itself
+MIT-licensed [Codex Usage for
+Linux](https://github.com/schlonz1975/codex-usage-linux) project, itself
 derived from the MIT-licensed [Codex Usage macOS
 project](https://github.com/BrkMen/CodexUsage) by BrkMen.

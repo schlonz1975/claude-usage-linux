@@ -2,39 +2,36 @@
 
 Claude Usage for Linux is designed to run locally.
 
-## Current status
+## Data it reads and sends
 
-`claude_usage/client.py` is a stub — it does not read any credentials or make
-any network requests yet. See [NOTES_LIVE_DATA.md](NOTES_LIVE_DATA.md) for
-what finishing it will require.
-
-## Data it will read, once wired up
-
-Claude Code has no free, dedicated "read my rate limits" call the way the
-Codex CLI does. The finished client is expected to send a minimal real
-request to Anthropic's Messages API (mirroring how Claude Code's own internal
-quota check works) using a token you provide, and read the resulting
-`anthropic-ratelimit-unified-*` response headers. It will not read your
-prompts, chats, or project files, and it will not read Claude Code's own
-`~/.claude/.credentials.json` OAuth session token directly.
+The application reads an OAuth token you saved yourself (via
+`claude-usage --set-token`, from `claude setup-token`) and sends a minimal
+(`max_tokens: 1`) request to `https://api.anthropic.com/v1/messages` — the
+same mechanism Claude Code's own CLI uses internally to check quota — then
+reads the remaining percentage, reset time, and window duration off the
+response headers. It does not read your prompts, chats, project files, or
+Claude Code's own `~/.claude/.credentials.json` OAuth session token.
 
 ## Data it stores
 
 The application stores only:
 
 - panel layout configuration managed by KDE Plasma;
-- display preferences under `~/.config/claude-usage`;
+- the OAuth token you provide, under `~/.config/claude-usage/oauth_token`
+  (readable only by you);
 - notification markers under `~/.local/state/claude-usage`.
 
-It does not store prompts, chats, or account credentials.
+It does not store prompts or chats.
 
 ## Network and telemetry
 
-The application has no analytics, telemetry, or crash-reporting SDK. The
-usage-page button opens claude.ai in the default browser.
+The application has no analytics, telemetry, or crash-reporting SDK. The only
+network call it makes is the minimal usage-check request described above.
+The usage-page button opens claude.ai in the default browser.
 
 ## Removal
 
 `./scripts/uninstall.sh` removes the program, widget, icon, launchers, and
-autostart entry. Notification markers remain unless removed manually; they
-contain only limit-window identifiers, reset timestamps, and thresholds.
+autostart entry. The saved OAuth token and notification markers remain
+unless removed manually; delete `~/.config/claude-usage` and
+`~/.local/state/claude-usage` to clear them.

@@ -5,9 +5,11 @@ Thanks for helping improve Claude Usage for Linux.
 ## Before opening a pull request
 
 1. Keep changes focused and avoid unrelated formatting rewrites.
-2. If you're finishing the live-data client, read
-   [NOTES_LIVE_DATA.md](NOTES_LIVE_DATA.md) first and preserve compatibility
-   with both `rateLimits` and `rateLimitsByLimitId` shapes in `parse_limits`.
+2. If you're touching `claude_usage/client.py`, read
+   [NOTES_LIVE_DATA.md](NOTES_LIVE_DATA.md) first — it relies on an
+   undocumented Anthropic mechanism that could change, and preserve
+   compatibility with both `rateLimits` and `rateLimitsByLimitId` shapes
+   in `parse_limits`.
 3. Add or update tests for parser, notification, or service behavior.
 4. Run `make test` and `git diff --check`.
 5. Test QML changes with Plasma 6 when possible:

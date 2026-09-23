@@ -20,7 +20,9 @@ reproduction steps, and expected impact. Do not include access tokens,
 - The widget receives display-ready data over the user's local session D-Bus.
 - Installation is limited to user-owned paths and does not require root.
 - No network listener is opened by this application.
-- The live-data client (see [NOTES_LIVE_DATA.md](NOTES_LIVE_DATA.md)) is
-  intentionally not finished yet: it will need to handle an Anthropic
-  authentication token, and that design deserves its own careful review
-  before it ships, separate from the rest of this widget.
+- The only outbound network call is a minimal usage-check request to
+  `api.anthropic.com` (see [NOTES_LIVE_DATA.md](NOTES_LIVE_DATA.md)).
+- The OAuth token used for that request is one you generate and save
+  yourself (`claude setup-token` / `claude-usage --set-token`), stored at
+  `~/.config/claude-usage/oauth_token` with `0600` permissions. The
+  application never reads Claude Code's own `~/.claude/.credentials.json`.

@@ -15,8 +15,6 @@ and the project follows [Semantic Versioning](https://semver.org/).
 - Threshold notifications at 20%, 10%, and 5% remaining.
 - Portable GTK/AppIndicator tray fallback.
 - User-level installation, autostart, uninstallation, and automated tests.
-
-### Known limitations
-
-- Live usage data is not wired up yet: `claude_usage/client.py` is a stub.
-  See [NOTES_LIVE_DATA.md](NOTES_LIVE_DATA.md).
+- Live usage data via a minimal Messages API request authenticated with a
+  `claude setup-token` OAuth token, plus `claude-usage --set-token` to save
+  it. See [NOTES_LIVE_DATA.md](NOTES_LIVE_DATA.md) for how it works.

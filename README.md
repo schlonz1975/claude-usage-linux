@@ -9,12 +9,12 @@ Claude's own color theme.
 > This is an unofficial community project. It is not affiliated with,
 > sponsored by, or endorsed by Anthropic.
 
-> [!WARNING]
-> **Pre-alpha: live usage data is not wired up yet.** The widget, tray,
-> service, and Plasma UI are complete and tested, but `claude_usage/client.py`
-> is a stub that raises a clear "not implemented" error instead of returning
-> real numbers. See [NOTES_LIVE_DATA.md](NOTES_LIVE_DATA.md) for exactly
-> what's needed to finish it and why it was left this way.
+> [!NOTE]
+> Live usage data relies on an undocumented Anthropic mechanism (the same
+> one Claude Code's own CLI uses internally to check quota), not an official
+> "read my rate limits" API. It could break on Anthropic's end without
+> notice. See [NOTES_LIVE_DATA.md](NOTES_LIVE_DATA.md) for how it works and
+> where the details came from.
 
 ## Features
 
@@ -27,7 +27,8 @@ Claude's own color theme.
 - Refreshes every five minutes.
 - Starts its local data service automatically at login.
 - Includes a GTK/AppIndicator tray fallback for non-Plasma desktops.
-- Stores no prompts, chats, API keys, or access tokens.
+- Stores no prompts, chats, or API keys — only the OAuth token you provide
+  for usage checks (see [Authentication](#authentication)).
 
 ## How it works
 
@@ -41,8 +42,8 @@ Local Python service
 KDE Plasma widget
 ```
 
-Once wired up, the local service will send a minimal request to Anthropic's
-API and read the account's rate-limit windows off the response headers —
+The local service sends a minimal (`max_tokens: 1`) request to Anthropic's
+API and reads the account's rate-limit windows off the response headers —
 the same mechanism Claude Code's own CLI uses internally to check quota.
 The Plasma widget only receives display-ready usage information over the
 local session bus. See [NOTES_LIVE_DATA.md](NOTES_LIVE_DATA.md) for details.
@@ -51,7 +52,7 @@ local session bus. See [NOTES_LIVE_DATA.md](NOTES_LIVE_DATA.md) for details.
 
 - Linux with Python 3.10 or newer.
 - The [Claude Code CLI](https://claude.com/product/claude-code), signed in
-  with your Claude subscription (`claude` / `claude auth login`).
+  with your Claude subscription, to generate a usage-check token (see below).
 - KDE Plasma 6 for the native widget.
 - Python D-Bus, PyGObject, libnotify, GTK 3, and Ayatana AppIndicator for the
   service, notifications, and portable tray fallback.
@@ -73,6 +74,21 @@ cd ClaudeUsageLinux
 No `sudo` is used by the installer. It installs files under `~/.local` and
 creates an autostart entry under `~/.config/autostart`.
 
+### Authentication
+
+Usage checks need a `claude setup-token` OAuth token — the same one Claude
+Code's own docs recommend for CI and scripts where interactive browser login
+isn't available:
+
+```bash
+claude setup-token   # opens a browser to approve, then prints a token
+claude-usage --set-token   # paste it when prompted; saved 0600
+```
+
+The token is saved to `~/.config/claude-usage/oauth_token` and never leaves
+your machine except in requests to `api.anthropic.com`. If the widget
+reports an expired or revoked token, rerun both commands.
+
 ### Add the Plasma widget
 
 1. Right-click the KDE panel and enter edit mode.
@@ -93,12 +109,11 @@ claude-usage
 
 ## Diagnostics
 
+Verify the token and usage connection:
+
 ```bash
 claude-usage --check
 ```
-
-Until [NOTES_LIVE_DATA.md](NOTES_LIVE_DATA.md) is resolved, this will always
-report that live data isn't wired up yet — that's expected.
 
 Run the automated test suite:
 
@@ -112,18 +127,19 @@ make test
 ./scripts/uninstall.sh
 ```
 
-Notification history remains under `~/.local/state/claude-usage` by design
-and contains no account or prompt data.
+Notification history remains under `~/.local/state/claude-usage`, and the
+saved OAuth token remains under `~/.config/claude-usage`, by design. Remove
+either manually if you want them gone.
 
 ## Privacy and security
 
-The application contains no analytics, telemetry, crash reporting, or direct
-credential handling. See [PRIVACY.md](PRIVACY.md) and [SECURITY.md](SECURITY.md).
+The application contains no analytics, telemetry, or crash reporting. See
+[PRIVACY.md](PRIVACY.md) and [SECURITY.md](SECURITY.md) for exactly what it
+reads, stores, and sends.
 
 ## Project status
 
-Pre-alpha. Structurally complete; live data source not yet wired up (see
-above). Developed and tested on KDE Plasma 6 running on Nobara Linux. Reports
+Alpha. Developed and tested on KDE Plasma 6 running on Nobara Linux. Reports
 from other distributions and desktop environments are welcome.
 
 ## Credits

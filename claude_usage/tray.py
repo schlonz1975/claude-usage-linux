@@ -45,7 +45,7 @@ class UsageTray:
         dashboard_item = Gtk.MenuItem(label="Open Usage Page")
         dashboard_item.connect(
             "activate",
-            lambda _item: webbrowser.open("https://claude.ai"),
+            lambda _item: webbrowser.open("https://claude.ai/settings/usage"),
         )
         quit_item = Gtk.MenuItem(label="Quit Claude Usage")
         quit_item.connect("activate", lambda _item: Gtk.main_quit())

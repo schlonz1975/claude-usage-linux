@@ -49,7 +49,7 @@ class UsageService(dbus.service.Object):
 
     @dbus.service.method(INTERFACE, in_signature="", out_signature="")
     def OpenUsagePage(self) -> None:
-        webbrowser.open("https://claude.ai")
+        webbrowser.open("https://claude.ai/settings/usage")
 
     @dbus.service.method(
         PROPERTIES_INTERFACE,

@@ -17,7 +17,7 @@ test -s "$linux_dir/assets/claude-usage.png"
 python3 -m json.tool "$linux_dir/plasmoid/metadata.json" >/dev/null
 grep -q '"X-Plasma-API-Minimum-Version": "6.0"' "$linux_dir/plasmoid/metadata.json"
 grep -q '^PlasmoidItem {' "$linux_dir/plasmoid/contents/ui/main.qml"
-grep -q 'Qt.openUrlExternally("https://claude.ai")' "$linux_dir/plasmoid/contents/ui/main.qml"
+grep -q 'Qt.openUrlExternally("https://claude.ai/settings/usage")' "$linux_dir/plasmoid/contents/ui/main.qml"
 if grep -q '^X-GNOME-Autostart-enabled' "$linux_dir/packaging/claude-usage.desktop.in"; then
     echo "Desktop-specific autostart key should not be required." >&2
     exit 1

@@ -21,7 +21,22 @@ PlasmoidItem {
         return window ? Math.max(0, Math.min(100, window.remaining)) : 0
     }
 
-    readonly property string statusText: backend.properties && backend.properties.Error
+    // org.kde.plasma.workspace.dbus's Properties element sometimes hands back
+    // a scalar (Plasma::DBus::STRING/BOOL) as a wrapped {"value": ...} object
+    // instead of a plain JS value, depending on whether it arrived via the
+    // initial GetAll or a later update. An object is always truthy in JS
+    // regardless of what it wraps, so every read of a DBus property used for
+    // its content (not just presence) needs to go through this first.
+    function dbusValue(value) {
+        if (value !== null && typeof value === "object" && "value" in value) {
+            return value.value
+        }
+        return value
+    }
+    readonly property string errorText: backend.properties ? dbusValue(backend.properties.Error) || "" : ""
+    readonly property bool loading: backend.properties ? !!dbusValue(backend.properties.Loading) : false
+
+    readonly property string statusText: errorText.length > 0
         ? i18n("Usage unavailable")
         : remaining >= 0 ? i18n("%1% remaining", remaining) : i18n("Connecting…")
 
@@ -33,7 +48,7 @@ PlasmoidItem {
     activationTogglesExpanded: true
 
     function parseUsage() {
-        const text = backend.properties ? backend.properties.Data : ""
+        const text = backend.properties ? dbusValue(backend.properties.Data) : ""
         if (!text) {
             return
         }
@@ -163,7 +178,7 @@ PlasmoidItem {
 
                 Item { Layout.fillWidth: true }
                 PlasmaComponents.BusyIndicator {
-                    visible: backend.properties ? backend.properties.Loading : false
+                    visible: root.loading
                     running: visible
                     Layout.preferredWidth: Kirigami.Units.iconSizes.small
                     Layout.preferredHeight: Kirigami.Units.iconSizes.small
@@ -208,8 +223,8 @@ PlasmoidItem {
 
             PlasmaComponents.Label {
                 visible: root.windows.length === 0
-                text: backend.properties && backend.properties.Error
-                    ? backend.properties.Error
+                text: root.errorText.length > 0
+                    ? root.errorText
                     : i18n("Waiting for usage information…")
                 wrapMode: Text.Wrap
                 opacity: 0.7
@@ -235,7 +250,7 @@ PlasmoidItem {
                 PlasmaComponents.Button {
                     icon.name: "internet-web-browser"
                     text: i18n("Open Usage Page")
-                    onClicked: Qt.openUrlExternally("https://claude.ai")
+                    onClicked: Qt.openUrlExternally("https://claude.ai/settings/usage")
                 }
             }
         }
